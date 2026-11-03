@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#ffffff">
+    <meta name="description" content="Um jogo rápido para praticar palavras em inglês, completar frases e acompanhar seu progresso.">
+    <title>Voca Sprint — inglês, uma palavra por vez</title>
+    <link rel="stylesheet" href="./game.css?v=aprender-6">
+    <link rel="stylesheet" href="./recognition.css?v=aprender-5">
+    <script defer src="./curated-cards.js?v=aprender-5"></script>
+    <script defer src="./trail-examples.js?v=aprender-6"></script>
+    <script defer src="./legacy-examples.js?v=aprender-6"></script>
+    <script defer src="./extra-tracks.js?v=aprender-6"></script>
+    <script defer src="./recognition.js?v=aprender-5"></script>
+    <script defer src="./learning.js?v=aprender-6"></script>
+    <script defer src="./game.js?v=aprender-6"></script>
+  </head>
+  <body>
+    <div class="grain" aria-hidden="true"></div>
+    <header class="topbar">
+      <a class="brand" href="#trilhas" aria-label="Voca Sprint, início">
+        <span class="brand-mark"><span class="brand-badge">V</span><span>✳</span></span>
+        <span class="brand-name">voca<span>sprint</span></span>
+      </a>
+      <nav class="main-nav" aria-label="Navegação principal">
+        <button class="nav-link is-active" data-view="tracks" type="button"><span class="nav-icon" aria-hidden="true">✦</span> Trilhas</button>
+        <button class="nav-link" data-view="play" type="button"><span class="nav-icon" aria-hidden="true">▶</span> Prática livre</button>
+        <button class="nav-link" data-view="library" type="button"><span class="nav-icon" aria-hidden="true">▦</span> Vocabulário</button>
+      </nav>
+      <div class="top-actions">
+        <button id="sound-toggle" class="icon-button sound-toggle" type="button" aria-pressed="true" aria-label="Desligar sons">
+          <span class="sound-glyph" aria-hidden="true">♫</span><span class="sound-label">Som ligado</span>
+        </button>
+        <button id="help-open" class="help-button" type="button" aria-label="Como funciona">?</button>
+      </div>
+    </header>
+
+    <main id="app" class="page-shell">
+      <section class="eyebrow-row" aria-label="Resumo do catálogo">
+        <div class="eyebrow"><span class="live-dot"></span> APRENDA UM POUQUINHO A CADA DIA <span class="heading-spark">✦</span></div>
+        <div class="catalog-caption"><strong id="word-count">—</strong> palavras <span>·</span> <strong id="meaning-count">—</strong> cartões</div>
+      </section>
+
+      <section id="play-view" class="view view-play" aria-labelledby="page-title" hidden>
+        <div class="page-heading">
+          <div>
+            <p class="overline"><span class="hero-kicker">✦</span> VAMOS PRATICAR</p>
+            <h1 id="page-title">Sua próxima palavra<span>.</span></h1>
+          </div>
+          <div class="mode-switch" role="group" aria-label="Tipo de treino">
+            <button type="button" class="mode-button is-active" data-mode="verbs">Verbos + frases</button>
+            <button type="button" class="mode-button" data-mode="all">Todas as palavras</button>
+          </div>
+        </div>
+
+        <div class="play-layout">
+          <section class="game-card" aria-label="Jogo de vocabulário">
+            <div class="game-card-top">
+              <div class="round-label"><span class="game-stage-tag" aria-hidden="true">✦</span> ATIVIDADE <strong id="round-number">01</strong></div>
+              <div id="track-banner" class="track-banner" hidden><span id="track-banner-track"></span><strong id="track-banner-stage"></strong><span id="track-banner-count"></span></div>
+              <div class="mastery-pill"><span class="mastery-dot"></span> PISTAS <strong id="level-number">0</strong><span class="level-divider">/</span>10</div>
+            </div>
+
+            <div class="prompt-area">
+              <div class="prompt-label"><span class="prompt-icon">PT</span> <span id="prompt-kind">SIGNIFICADO EM PORTUGUÊS</span></div>
+              <h2 id="meaning" class="meaning">Preparando sua primeira palavra…</h2>
+              <div class="word-meta"><span id="cefr-tag" class="cefr-tag">A1</span><span id="part-of-speech" class="pos-label">uma palavra nova</span></div>
+            </div>
+
+            <div id="phrase-card" class="phrase-card" hidden>
+              <div class="phrase-topline"><span id="phrase-label">NA FRASE</span><span class="phrase-spark">✳</span></div>
+              <p id="phrase-text" class="phrase-text"></p>
+              <p id="phrase-translation" class="phrase-translation" hidden></p>
+              <button id="phrase-audio" class="text-button" type="button">🔊 Ouvir frase</button>
+            </div>
+            <div id="phrase-preview" class="phrase-card" hidden><span class="review-kicker">UMA FRASE DESTA TRILHA</span><p id="phrase-preview-text" class="phrase-text"></p><p id="phrase-preview-translation" class="phrase-translation"></p><button id="preview-audio" class="text-button" type="button">🔊 Ouvir frase</button></div>
+
+            <div class="answer-preview-label"><span><span class="answer-header-mark" aria-hidden="true">▰</span> SUA RESPOSTA</span><span id="hint-caption">copie a palavra para começar</span></div>
+            <div id="letter-tiles" class="letter-tiles" aria-label="Pistas de letras"></div>
+
+            <form id="answer-form" class="answer-form" autocomplete="off">
+              <label id="answer-label" class="sr-only" for="answer-input">Digite a palavra em inglês</label>
+              <div class="answer-entry">
+                <span class="entry-mark" aria-hidden="true">↳</span>
+                <input id="answer-input" name="answer" type="text" autocapitalize="none" spellcheck="false" autocomplete="off" placeholder="digite aqui…" aria-describedby="feedback" required>
+                <button class="submit-button" type="submit"><span id="submit-label">Conferir</span><kbd id="submit-key">↵</kbd></button>
+              </div>
+            </form>
+            <div class="game-tools">
+              <button id="reveal-button" class="text-button" type="button"><span aria-hidden="true">◉</span> Mostrar resposta</button>
+              <button id="report-button" class="text-button" type="button" hidden>Sinalizar resposta</button>
+              <div class="tool-right">
+                <button id="pronounce-button" class="text-button" type="button"><span aria-hidden="true">◖</span> Ouvir palavra</button>
+                <button id="skip-button" class="text-button skip-button" type="button">Pular <span aria-hidden="true">→</span></button>
+              </div>
+            </div>
+            <div id="feedback" class="feedback" role="status" aria-live="polite" hidden></div>
+            <div class="card-footnote"><span class="footnote-key">↵</span> Enter para conferir <span class="footnote-separator">·</span> progresso salvo neste dispositivo</div>
+          </section>
+
+          <aside class="side-column" aria-label="Seu progresso">
+            <section class="stat-card rhythm-card">
+              <div class="side-card-head"><div><span class="side-overline">SEU PROGRESSO</span><h2>Seu ritmo.</h2></div><span class="streak-icon stat-icon" aria-hidden="true">⚡</span></div>
+              <div class="today-stats">
+                <div class="today-stat"><strong id="today-count">0</strong><span>atividades hoje</span></div>
+                <div class="stat-rule"></div>
+                <div class="today-stat"><strong id="combo-count">0<span class="tiny-fire">✦</span></strong><span>em sequência</span></div>
+              </div>
+              <div class="xp-row"><span>XP acumulado</span><strong><span id="xp-count">0</span> XP</strong></div>
+              <div class="xp-track"><span id="xp-fill"></span></div>
+            </section>
+
+            <section class="stat-card achievement-card">
+              <div class="side-card-head"><div><span class="side-overline">CADA PASSO CONTA</span><h2>Conquistas</h2></div><button id="achievements-open" class="mini-arrow" type="button" aria-label="Ver todas as conquistas">↗</button></div>
+              <div id="achievement-preview" class="achievement-preview"></div>
+              <button id="all-achievements" class="all-achievements" type="button">Ver coleção <span>→</span></button>
+            </section>
+
+            <section class="library-teaser">
+              <div class="book-stack" aria-hidden="true"><span></span><span></span><span></span></div>
+              <div class="teaser-copy"><strong>Seu caderno cresce</strong><span>Acertos e revisões ficam por aqui.</span></div>
+              <button id="open-library" type="button" aria-label="Abrir meu vocabulário">↗</button>
+            </section>
+          </aside>
+        </div>
+
+        <div class="bottom-note"><span class="note-mark">✳</span><span>Sem pressa, sem fim. Cada acerto deixa a próxima palavra um pouquinho mais desafiadora.</span><button id="sources-open" type="button">De onde vêm as palavras?</button></div>
+      </section>
+
+      <section id="tracks-view" class="view view-tracks" aria-labelledby="tracks-title">
+        <div class="journey-heading">
+          <div><p class="overline">SEU CAMINHO DE INGLÊS</p><h1 id="tracks-title">Vamos aprender?</h1><p>Um passo de cada vez, no seu ritmo.</p></div>
+          <div class="journey-stats"><span class="journey-xp"><span aria-hidden="true">✦</span> <strong id="track-xp-count">0</strong> XP</span><button id="track-achievements" class="journey-achievements" type="button"><span aria-hidden="true">🏆</span> Conquistas <strong id="track-achievement-count">0/8</strong></button></div>
+        </div>
+        <section class="review-card" aria-labelledby="review-title"><div><span class="review-kicker">LEMBRAR FAZ PARTE DO CAMINHO</span><h2 id="review-title">Hora de revisar</h2><p id="review-description">Carregando suas revisões…</p></div><button id="start-reviews" class="review-button" type="button" disabled>Revisar agora <span>→</span></button></section>
+        <section class="practice-card" aria-labelledby="practice-title"><div><span class="review-kicker">OUTRAS FORMAS DE PRATICAR</span><h2 id="practice-title">Reconheça e escute</h2><p>Escolha o significado de palavras em inglês ou pratique ouvindo.</p></div><div class="practice-actions"><button id="start-recognition" type="button">Reconhecer palavras</button><button id="start-listening" type="button">🔊 Praticar escuta</button></div><p id="practice-note" class="practice-note" aria-live="polite">A atividade usa palavras selecionadas para o jogo.</p></section>
+        <nav class="journey-navigation" aria-label="Ir para uma parte das trilhas"><button id="jump-journey" type="button">Meu caminho</button><button id="explore-topics" type="button">Explorar temas ↓</button></nav>
+        <div id="track-map" class="track-map" aria-label="Mapa de trilhas e suas etapas"></div>
+      </section>
+
+      <section id="library-view" class="view view-library" aria-labelledby="library-title" hidden>
+        <div class="library-heading">
+          <div><p class="overline">SEU CADERNO DE INGLÊS</p><h1 id="library-title">Palavras em movimento<span>.</span></h1><p class="library-subtitle">O que você já encontrou e o que vem pela frente.</p></div>
+          <button id="back-to-game" class="primary-button" type="button">Voltar ao treino <span>↗</span></button>
+        </div>
+        <div class="library-toolbar">
+          <label class="search-box"><span aria-hidden="true">⌕</span><span class="sr-only">Buscar no vocabulário</span><input id="library-search" type="search" placeholder="Buscar uma palavra ou significado…"></label>
+          <div class="library-filters" role="group" aria-label="Filtrar palavras">
+            <button type="button" class="filter-button is-active" data-filter="all">Todas</button>
+            <button type="button" class="filter-button" data-filter="new">Ainda não vi</button>
+            <button type="button" class="filter-button" data-filter="learned">Em progresso</button>
+            <button type="button" class="filter-button" data-filter="mastered">Lembradas</button>
+          </div>
+        </div>
+        <p class="library-quality">O catálogo amplo inclui conteúdo de dicionário que ainda não passou por revisão editorial.</p>
+        <button id="export-reports" class="text-button" type="button">Exportar sinalizações salvas</button>
+        <div class="library-summary"><span><strong id="library-results">0</strong> cartões</span><span>SEU VOCABULÁRIO · ORDENADO POR FREQUÊNCIA</span></div>
+        <div id="library-list" class="library-list"></div>
+        <div class="library-pagination"><button id="library-prev" class="page-button" type="button">← Anterior</button><span id="page-label">Página 1</span><button id="library-next" class="page-button" type="button">Próxima →</button></div>
+      </section>
+    </main>
+
+    <footer class="site-footer"><span>vocasprint <span class="footer-dot">·</span> aprenda no seu ritmo <span class="footer-version">✦</span></span><button id="footer-sources" type="button">Fontes e créditos</button><span>Seu progresso fica no navegador.</span></footer>
+
+    <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+    <div id="modal-backdrop" class="modal-backdrop" hidden>
+      <section id="modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <button id="modal-close" class="modal-close" type="button" aria-label="Fechar">×</button>
+        <div id="modal-content"></div>
+      </section>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,10 @@
+# Voca Sprint — fontes e licenças dos dados
+
+O catálogo público combina as fontes abaixo. As frases marcadas como originais foram escritas para este jogo; as demais foram extraídas dos sentidos do dicionário.
+
+- **LexiCore-5000**, v1.0.0. Lista de palavras, níveis e ordenação: [github.com/X-Trivle/LexiCore](https://github.com/X-Trivle/LexiCore), CC BY 4.0. A seleção foi filtrada para palavras cobertas pelo dicionário inglês–português. Atribuição: “LexiCore-5000 (v1.0.0), https://github.com/X-Trivle/LexiCore — CC BY 4.0. Frequency evidence derived from FineWeb, FineWeb-Edu, Wikipedia (20231101.en), OPUS-OpenSubtitles 2024 and Common Crawl CC-MAIN-2026-34.” A lista de níveis também incorpora CEFR-J e Octanove; consulte o [NOTICE upstream](https://github.com/X-Trivle/LexiCore/blob/main/NOTICE.md).
+- **Wordfreq**, Robyn Speer, v3.0.2. Valores Zipf de 2021 usados para ordenar a lista. Os dados são CC BY-SA 4.0; a licença Apache-2.0 do código do pacote não se aplica ao código deste jogo. Fontes do Wordfreq incluem Google Books Ngrams, Wikipedia, Leeds Internet Corpus, ParaCrawl, OpenSubtitles e SUBTLEX. Atribua os autores SUBTLEX — Marc Brysbaert et al.; referência: Brysbaert & New (2009) — e mantenha claro que os dados SUBTLEX são livremente disponíveis. Para Google Books Ngram, reconheça o Google Books Ngram Viewer como fonte.
+- **KOReader en→pt**, dicionário inglês–português do Brasil, CC BY-SA 4.0. Compilado a partir de OpenWN-PT via Open Multilingual Wordnet, Princeton WordNet 3.0 e English/Portuguese Wiktionary via Kaikki/Wiktextract. Os avisos integrais estão em `dist/ATTRIBUTION-KOReader-en-pt.txt` e `dist/LICENSE-KOReader-en-pt.txt`.
+- **Conteúdo próprio do jogo**: curadoria de traduções e exemplos para palavras frequentes e frases completas com tradução em português, criadas para os desafios das trilhas.
+
+O catálogo de dados combinado é distribuído sob **CC BY-SA 4.0**, mantendo os avisos originais e as condições de cada fonte. A página pública `dist/creditos.html` reúne os links e créditos em linguagem simples.
